@@ -1,0 +1,16 @@
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:该mapper.xml是映射文件唯一标识 -->
+<mapper namespace="org.lanqiao.mapper.StudentMapper">
+	<select id="queryStudentByStuno" parameterType="int"
+		resultType="org.lanqiao.entity.Student">
+		select * from student where stuNo= #{stuNo}
+	</select>
+	<insert id="addStudent" parameterType="org.lanqiao.entity.Student">
+		insert into student(stuNo,stuName,stuAge)
+		values(#{stuNo},#{stuName},#{stuAge})
+	</insert>
+
+</mapper>

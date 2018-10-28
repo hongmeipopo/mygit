@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    					http://www.springframework.org/schema/beans/spring-beans.xsd
+    					http://www.springframework.org/schema/mvc
+    					http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    					http://www.springframework.org/schema/context
+    					http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<bean id="config" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="locations">
+			<array>
+				<value>classpath:db.properties</value>
+			</array>
+		</property>
+	</bean>
+	
+	
+	<bean id="studentMapper" class="org.lanqiao.dao.impl.StudentDaoImpl">
+	<!-- 将spring配置的sqlSessionFactory 交给dao层 -->
+		<property name="sqlSessionFactory" ref ="sqlSessionFactory"></property>
+	</bean>
+	
+	<bean id="studentService" class="org.lanqiao.service.impl.StudentServiceImpl">
+		<property name="studentMapper" ref="studentMapper"></property>
+	</bean>
+	
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${driver}"></property>
+		<property name="url" value="${url}"></property>
+		<property name="username" value="${username}"></property>
+		<property name="password" value="${password}"></property>
+		<property name="maxActive" value="${maxActive}"></property>
+		<!-- 最大空闲时间 -->
+		<property name="maxIdle"   value="${maxIdle}"></property>
+	</bean>
+	
+	
+	<!-- 在SpringIoc容器中创建 MyBatis的核心类 SqlSessionFactory 
+	不需要自己写，别人已经写好了
+	-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<!-- 访问数据库要有数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!--  加载 mybatis配置文件 -->
+		<property name="configLocation" value="classpath:conf.xml"></property>
+	</bean>
+	
+</beans>
