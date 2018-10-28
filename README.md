@@ -1,0 +1,2 @@
+# mygit
+read the picture
